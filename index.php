@@ -17,14 +17,20 @@ F3::set('FONTS','fonts/');
 // Path to our templates
 F3::set('GUI','gui/');
 
-F3::mset(
-	array(
-		'site'=>'Kullanıcı Veritabanı'
-	)
-);
+// Another way of assigning values to framework variables
+F3::set('site','Kullanıcı Veritabanı');
 
 // Common inline Javascript
 F3::set('extlink','window.open(this.href); return false;');
+
+F3::set('DB',
+	array(
+		'dsn'=>'mysql:host=localhost;port=3306;dbname=f3',
+		'user'=>'f3',
+		'password'=>'secret'
+	)
+);
+F3::call(':db');
 
 // Define our main menu; this appears in all our pages
 F3::set('menu',
@@ -58,6 +64,22 @@ F3::route('GET /login',':login',3600);
 	// This route is called when user submits login credentials
 	F3::route('POST /login',':auth');
 
+// New blog entry
+F3::route('GET /new',':createkul');
+	// Submission of blog entry
+	F3::route('POST /new',':savekul');
+
+F3::route('GET /show', ':showkul');
+/*
+// Edit blog entry
+F3::route('GET /edit/@tc',':editkul');
+	// Update blog entry
+	F3::route('POST /edit/@tc',':updatekul');
+
+// Delete blog entry
+F3::route('GET /delete/@tc',':erasekul');
+*/
+
 // Logout
 F3::route('GET /logout',':logout');
 
@@ -70,6 +92,22 @@ F3::route('GET /captcha',':captcha');
 // Execute application
 F3::run();
 
+/**
+	The function below could have been saved as an import file (render.php)
+	loaded by the F3::route method like the other route handlers; but let's
+	embed it here so you can see how you can mix and match MVC functions
+	and import files.
+
+	Although allowed by Fat-Free, functions like these are not recommended
+	because they pollute the global namespace, specially when it's defined
+	in the main controller. In addition, the separation of the controller
+	component and the business logic becomes blurred when we do this - not
+	good MVC practice.
+
+	It's all right to define the function here if you're still figuring out
+	the structural layout of your application, but don't trade off coding
+	convenience for good programming habits.
+**/
 function render() {
 	// layout.htm is located in the directory pointed to by the Fat-Free
 	// GUI global variable
