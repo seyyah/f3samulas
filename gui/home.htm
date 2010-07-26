@@ -1,0 +1,14 @@
+<h3>
+	<F3:check if="{@SESSION.user}">
+		<F3:true>Hoşgeldin, {ucfirst(@SESSION.user)}!</F3:true>
+		<F3:false>{@pagetitle}</F3:false>
+	</F3:check>
+</h3>
+<F3:check if="{@SESSION.user}">
+	<F3:true>
+		<p><a href="/create">+ Yeni kullanıcı ekle</a></p>
+		<p><a href="/ldap/compare">+ Kullanıcı karşılaştır</a></p>
+		<p><a href="/search_cn">+ Kullanıcı ara</a></p>
+		<p><a href="/search">+ Tüm kullanıcılar</a></p>
+	</F3:true>
+</F3:check>
